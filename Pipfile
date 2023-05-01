@@ -12,6 +12,7 @@ seaborn = "*"
 scipy = "*"
 streamlit = "*"
 snowflake-snowpark-python = "*"
+pyarrow = "==10.0.1"
 
 [dev-packages]
 
