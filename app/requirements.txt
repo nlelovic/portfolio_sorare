@@ -1,8 +1,0 @@
-pandas
-plotly
-numpy
-scikit-learn
-seaborn
-scipy
-streamlit
-snowflake-snowpark-python
