@@ -22,6 +22,6 @@ st.subheader("Acknowledgments")
 
 st.write(""" First, I want to thank Sorare for providing data open source. Without them, the whole Streamlit App and 
          the university project would not be a great success. So check the Website out at https://sorare.com/ . Further I want to thank University Konstanz and Aix-Marseille University for the high quality education.
-         Special thanks to Ms. Lyudmila Grigoryeva and Mr. Winfried Pohlmeier for drastically improving my relevant hard skills. Last but not least, I want to thank Julia Funkner, Kevin Polaczek, Daniil Parfenov, Jelena Lelovic, and my parents 
+         Special thanks to Ms. Lyudmila Grigoryeva and Mr. Winfried Pohlmeier for drastically improving my relevant hard skills. Last but not least, I want to thank Julia Funkner, Alexander Beales, Kevin Polaczek, Daniil Parfenov, Jelena Lelovic, and my parents 
          for all the assistance and happy times in my live. They deserve all the best.
          """)
