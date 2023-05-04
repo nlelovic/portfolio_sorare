@@ -106,11 +106,11 @@ query_header = """select    (
 
 
 #@st.cache_data(ttl=24*3600)
-results_header = conn.query(query_header, ttl=24*3600)#.iloc[0][0]
+results_header = conn.query(query_header, ttl=24*3600)
 
 st.subheader("Database information")
-st.write("The database was created in January 2021. Therefore, the entries are only updated until that date. Nevertheless, the focus is to demonstrate a nice Streamlit powered dashboard. Further, the data is stored in Snowflake.")
-st.write(f"The database consist of {results_header.iloc[0][0]:,.0f} players, {results_header.iloc[0][1]:.0f} cards, {results_header.iloc[0][2]:.0f} competitions, and {results_header.iloc[0][3]:.0f} clubs. The trading volume amounts to {results_header.iloc[0][4]:,.2f} EUR or {results_header.iloc[0][5]:,.2f} ETH with {results_header.iloc[0][6]:,.0f} transactions. Also {results_header.iloc[0][7]:,.0f} goals were scored and {results_header.iloc[0][8]:,.0f} minutes were played.")
+st.write("The database was created in January 2021. Therefore, the entries are only updated until that date. Nevertheless, the focus is to demonstrate a nice Streamlit powered dashboard with data stored in Snowflake.")
+st.write(f"The database consist of {results_header.iloc[0][0]:,.0f} players, {results_header.iloc[0][1]:.0f} cards, {results_header.iloc[0][2]:.0f} competitions, and {results_header.iloc[0][3]:.0f} clubs. The trading volume amounts to {results_header.iloc[0][4]:,.2f} EUR or {results_header.iloc[0][5]:,.2f} ETH with {results_header.iloc[0][6]:,.0f} transactions. Also {results_header.iloc[0][7]:,.0f} goals were scored and {results_header.iloc[0][8]:,.0f} minutes were played in real life.")
 
 # Random card generator after picking a players name
 
