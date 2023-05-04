@@ -6,7 +6,7 @@ import numpy as np
 # page config
 st.set_page_config(
     page_title="Sorare NFT Cards Exploration and Analysis",
-    page_icon="🧊",
+    page_icon="⚽",
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
@@ -124,9 +124,28 @@ with col1:
     query_picture = f"select t2.DISPLAY_NAME, t1.PICTURE_URL from sorare_cards as t1 INNER join sorare_player as t2 on t1.player_id = t2.player_id where t2.display_name = '{name_picture}' Limit 1;"
 
     results_picture = conn.query(query_picture, ttl=24*3600)
+    
+    ## Table for player informations
+
+    # Cache the dataframe so it's only loaded once
+    #@st.cache_data
+
+    player_info = f"select t1.Position, t1.active_club_name, t1.Subscription_count, t1.age, t1.height,  t1.nationality, t2.goals, t2.appearances, t2.assists, t2.yellow_cards, t2.red_cards, t2.minutes_played from SORARE_Player as t1 inner join sorare_stats as t2 on t1.player_id = t2.STATS_PLAYER_ID where t1.Display_Name = '{name_picture}';" 
+                    
+
+    result_player_info = conn.query(player_info, ttl=24*3600)
+    
+    
+
+
+    # Display the dataframe and allow the user to stretch the dataframe
+    # across the full width of the container, based on the checkbox value
+    st.dataframe(result_player_info.T, use_container_width=True)
+    
 
 with col2:
     st.empty()
 
 with col3:
     st.image(results_picture.iloc[0][1])
+    
