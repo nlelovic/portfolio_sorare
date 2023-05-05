@@ -2,6 +2,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
 import numpy as np
+import plotly.express as px 
 
 # page config
 st.set_page_config(
@@ -116,10 +117,16 @@ st.write(f"The database consist of {results_header.iloc[0][0]:,.0f} players, {re
 
 player_names = conn.query("select DISPLAY_NAME from SORARE_PLAYER;")
 
+# Select Serial Years 
+
+#player_serial_year = conn.query("select distinct serial_year from sorare_card_supply;")
+
 col1, col2, col3 = st.columns((2,1,1))
 
 with col1:
     name_picture = st.selectbox("Pick a player", options=player_names)
+    
+    #name_picture = st.selectbox("Select a season year", options=player_serial_year)
 
     query_picture = f"select t2.DISPLAY_NAME, t1.PICTURE_URL from sorare_cards as t1 INNER join sorare_player as t2 on t1.player_id = t2.player_id where t2.display_name = '{name_picture}' Limit 1;"
 
@@ -134,8 +141,7 @@ with col1:
                     
 
     result_player_info = conn.query(player_info, ttl=24*3600)
-    
-    
+
 
 
     # Display the dataframe and allow the user to stretch the dataframe
@@ -149,3 +155,19 @@ with col2:
 with col3:
     st.image(results_picture.iloc[0][1])
     
+
+col1_price , col2_price = st.columns((10,1))
+
+with col1_price:
+    # Price Chart per Player
+    
+    scarcity_player_price = st.selectbox("Pick a scarcity", options=["limited", "rare", "super_rare", "unique"])
+
+   #  player_price_query = f"select t1.transaction_date, t1.price_eur from sorare_price_history as t1 inner join sorare_player as t2 on t1.price_history_player_id = t2.player_id where t2.display_name= '{name_picture}' and t1.price_eur != 0 order by t1.transaction_date ASC;"
+    
+    player_price_query = f"select t1.transaction_date, t1.price_eur, t3.rarity from sorare_price_history as t1 inner join sorare_player as t2 on t1.price_history_player_id = t2.player_id inner join sorare_cards as t3 on t1.cards_card_id = t3.card_id where t2.display_name= '{name_picture}' and t3.rarity= '{scarcity_player_price}' and t1.price_eur != 0 order by t1.transaction_date ASC"
+      
+    results_player_price = conn.query(player_price_query, ttl = 24*3600)
+
+    fig_player_price = px.line(results_player_price, x="TRANSACTION_DATE", y="PRICE_EUR")
+    st.plotly_chart(fig_player_price, use_container_width=True)
