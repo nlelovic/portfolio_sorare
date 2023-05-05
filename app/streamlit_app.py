@@ -29,7 +29,7 @@ conn = st.experimental_connection('snowpark')
 # Title Picture
 # Iframe Sorare title picture
 
-c1, c2 = st.columns((2,1))
+c1, c2, c3 = st.columns((6,1,9))
 
 with c1:
     # st.image(components.html(
@@ -41,9 +41,32 @@ with c1:
     st.image("https://vtlogo.com/wp-content/uploads/2022/09/sorare-vector-logo-2022.png")
 with c2:
     st.empty()
+with c3:
+    # What is Sorare? 
+
+    st.header("What is Sorare?")
+
+    st.caption("Like Panini cards but with NFT technology and a fantasy game.")
+
+    st.write("""Sorare was funded 5 years ago in 2018 by a French startup based in Paris. Basically, Sorare built a fantasy game with NFTs.
+                You can purchase various cards of real stars in football and use them to compete in different competitions against other
+                NFT card holders. Over the years Sorare managed to incorporate more and more european football leagues and further stepped into
+                new sports markets like the MLB or NBA.
+            """)
+
+st.subheader("What can you expect from this Streamlit app and why was it created?")
+
+st.write(
+    """
+    This app will allow you to browse through the database of the Sorare football cards and also do some basic analysis backed by machine learning methods.
+    It is a product of my Master's studies, where newly acquired machine learning and big data techniques should be applied on a dataset of choice.
+    This project is part of my data science portfolio to demonstrate my skill set and capabilities as a Data Scientist. And of course offer you a nice experience!
+    Make sure to check out the About page, where you can find more info about Sorare and also about me.
+    Have fun!
+    """
+)
 
 # Header Title Page
-# some queries
 query_header = """select    (
            select count(*)
            from SORARE_PLAYER
@@ -61,11 +84,11 @@ query_header = """select    (
            from SORARE_CLUB
            ) as Club_Count,
            (
-           select count(*)
+           select sum(PRICE_EUR)
            from SORARE_PRICE_HISTORY
            ) as Trading_Volume_EUR,
            (
-           select count(*)
+           select sum(PRICE)
            from SORARE_PRICE_HISTORY
            ) as Trading_Volume_ETH,
            (
@@ -73,20 +96,22 @@ query_header = """select    (
            from SORARE_PRICE_HISTORY
            ) as Transactions_Count,
            (
-           select count(*)
+           select sum(GOALS)
            from SORARE_STATS
            ) as Goals_Count,
            (
-           select count(*)
+           select sum(MINUTES_PLAYED)
            from SORARE_STATS
            ) as Minutes_Played
            ;"""
 
 
 #@st.cache_data(ttl=24*3600)
-results_header = conn.query(query_header, ttl=24*3600)#.iloc[0][0]
+results_header = conn.query(query_header, ttl=24*3600)
 
-st.write(f"The database consist of {results_header.iloc[0][0]:,} players, {results_header.iloc[0][1]} cards, {results_header.iloc[0][2]} competitions, and {results_header.iloc[0][3]} clubs. The trading volume amounts to {results_header.iloc[0][4]:,.2f} EUR or {results_header.iloc[0][5]:,.2f} ETH with {results_header.iloc[0][6]:,} transactions. Also {results_header.iloc[0][7]:,} goals were scored and {results_header.iloc[0][8]:,} minutes were played.")
+st.subheader("Database information")
+st.write("The database was created in January 2021. Therefore, the entries are only updated until that date. Nevertheless, the focus is to demonstrate a nice Streamlit powered dashboard with data stored in Snowflake.")
+st.write(f"The database consist of {results_header.iloc[0][0]:,.0f} players, {results_header.iloc[0][1]:.0f} cards, {results_header.iloc[0][2]:.0f} competitions, and {results_header.iloc[0][3]:.0f} clubs. The trading volume amounts to {results_header.iloc[0][4]:,.2f} EUR or {results_header.iloc[0][5]:,.2f} ETH with {results_header.iloc[0][6]:,.0f} transactions. Also {results_header.iloc[0][7]:,.0f} goals were scored and {results_header.iloc[0][8]:,.0f} minutes were played in real life.")
 
 # Random card generator after picking a players name
 
