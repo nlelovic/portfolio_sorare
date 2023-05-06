@@ -5,6 +5,8 @@ import plotly.graph_objects as go
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.preprocessing import StandardScaler
+from scipy import stats
 
 
 # Initialize connection.
@@ -55,9 +57,37 @@ st.write("It is necessary to use a logarithmic scale for the price distribution,
 
 super_rare = result_price_history[result_price_history["RARITY"] == "super_rare"]
 
+scaler=StandardScaler()
+X_std=scaler.fit_transform(super_rare["LN(T1.PRICE_EUR)"].values.reshape(-1,1))
+super_rare["LN(T1.PRICE_EUR)"] = X_std.reshape(-1)
+
 fig_superrare_log = ff.create_distplot([list(super_rare["LN(T1.PRICE_EUR)"])], ["LN(PRICE_EUR)"])
 st.plotly_chart(fig_superrare_log)
 
-fig_superrare = ff.create_distplot([list(super_rare["PRICE_EUR"])], ["PRICE_EUR"])
-st.plotly_chart(fig_superrare)
+# fig_superrare = ff.create_distplot([list(super_rare["PRICE_EUR"])], ["PRICE_EUR"])
+# st.plotly_chart(fig_superrare)
 
+alpha = 0.05
+k2,p = stats.normaltest(super_rare["LN(T1.PRICE_EUR)"])
+
+st.markdown(
+    """
+    In order to test whether the log prices are normally distributed or not, we need to conduct a statistical hypothesis test.
+    The null hypotheis of the statistical test is set as "The data is normally distributed." For the computation, scipy.stats.normaltest from D'Agostino is used.
+
+    After the computation, we find:
+    """
+)
+
+if p < alpha:
+    st.write("The null hypothesis can be rejected. So the log prices are not normally distributed.")
+else:
+    st.write("The null hypothesis cannot be rejected. So the log prices are normally distributed.")
+
+st.markdown(
+    """
+    This result allows to get a sense about how the data is distributed. If the underlying data is normally distributed, then further assumptions about the price process can be derived and one can apply other more advanced Econometric methods to do a more thorough analysis.
+
+    Further analysis will not be made, as it is out of scope for this project and Streamlit application demonstration. But still. It is a valuable result to know, that the price process of the super rare cards is not normally distributed.
+    """
+)

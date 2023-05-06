@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
 st.title("About this Project")
 
@@ -10,6 +11,24 @@ st.write("""This project was created as an university project to demonstrate new
          Thankfully, Sorare provided the data open source. This streamlit app shall represent my skills and be an example for my Data Science Portfolio of Projects. 
          The underlying database for the deployed app is stored at a Snowflake database, which is not publicly available.
          """)
+
+st.subheader("About me!")
+
+col1, col2, col3 = st.columns((1,0.5,4))
+
+with col1:
+    st.image("https://nenad-lelovic.de/css/img/person_img.jpg")
+with col2:
+    st.empty()
+with col3:
+    st.markdown(
+        """
+        My name is Nenad Lelovic and I am a Master Student at the University Konstanz and Université Aix-Marseille.
+        I majored Econometrics, Big Data and Statistics as well as Quantitative Finance. In recent years I learned a lot in Software Engnineering and the theories behind Machine Learning and Probability Theory.
+
+        If you like to [connect with me on LinkedIn](https://www.linkedin.com/in/nenad-lelovic/) feel free to send me an invite!
+        """
+    )
 
 st.subheader("Disclaimer")
 

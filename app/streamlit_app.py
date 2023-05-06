@@ -60,7 +60,7 @@ st.write(
     """
     This app will allow you to browse through the database of the Sorare football cards and also do some basic analysis backed by machine learning methods.
     It is a product of my Master's studies, where newly acquired machine learning and big data techniques should be applied on a dataset of choice.
-    This project is part of my data science portfolio to demonstrate my skill set and capabilities as a Data Scientist. And of course offer you a nice experience!
+    This project is part of my data science portfolio to demonstrate my skill set and capabilities as a Data Scientist. Especially, the demonstration of Streamlit how it allows Data Scientists to build an easy and beautiful looking application for it's consumers. 
     Make sure to check out the About page, where you can find more info about Sorare and also about me.
     Have fun!
     """
@@ -111,7 +111,8 @@ results_header = conn.query(query_header, ttl=24*3600)
 
 st.subheader("Database information")
 st.write("The database was created in January 2021. Therefore, the entries are only updated until that date. Nevertheless, the focus is to demonstrate a nice Streamlit powered dashboard with data stored in Snowflake.")
-st.write(f"The database consist of {results_header.iloc[0][0]:,.0f} players, {results_header.iloc[0][1]:.0f} cards, {results_header.iloc[0][2]:.0f} competitions, and {results_header.iloc[0][3]:.0f} clubs. The trading volume amounts to {results_header.iloc[0][4]:,.2f} EUR or {results_header.iloc[0][5]:,.2f} ETH with {results_header.iloc[0][6]:,.0f} transactions. Also {results_header.iloc[0][7]:,.0f} goals were scored and {results_header.iloc[0][8]:,.0f} minutes were played in real life.")
+#st.markdown(f"The database consist of {results_header.iloc[0][0]:,.0f} players, {results_header.iloc[0][1]:.0f} cards, {results_header.iloc[0][2]:.0f} competitions, and {results_header.iloc[0][3]:.0f} clubs. The trading volume amounts to {results_header.iloc[0][4]:,.2f} EUR or {results_header.iloc[0][5]:,.2f} ETH with {results_header.iloc[0][6]:,.0f} transactions. Also {results_header.iloc[0][7]:,.0f} goals were scored and {results_header.iloc[0][8]:,.0f} minutes were played in real life.")
+st.markdown(f"The database consist of:\n - {results_header.iloc[0][0]:,.0f} players\n - {results_header.iloc[0][1]:,.0f} Sorare issued cards\n - {results_header.iloc[0][2]:.0f} competitions\n - {results_header.iloc[0][3]:.0f} clubs\n - The trading volume amounts to {results_header.iloc[0][4]:,.2f} EUR or {results_header.iloc[0][5]:,.2f} ETH\n - with {results_header.iloc[0][6]:,.0f} transactions\n - Also {results_header.iloc[0][7]:,.0f} goals were scored and {results_header.iloc[0][8]:,.0f} minutes were played in real life.")
 
 # Random card generator after picking a players name
 
@@ -121,10 +122,15 @@ player_names = conn.query("select DISPLAY_NAME from SORARE_PLAYER;")
 
 #player_serial_year = conn.query("select distinct serial_year from sorare_card_supply;")
 
+st.subheader("Player Information")
+st.caption("Keep in mind, data is not updated. So you could observe, that  e.g. Erling Haaland still is active for Borussia Dortmund.")
+
+st.empty()
+
 col1, col2, col3 = st.columns((2,1,1))
 
 with col1:
-    name_picture = st.selectbox("Pick a player", options=player_names)
+    name_picture = st.selectbox("Pick a player!", options=player_names)
     
     #name_picture = st.selectbox("Select a season year", options=player_serial_year)
 
@@ -156,12 +162,14 @@ with col3:
     st.image(results_picture.iloc[0][1])
     
 
+st.subheader("Price Information per Player and Rarity level of a card")
+st.caption("Hint: The chart is generated based on the player you already selected above.")
 col1_price , col2_price = st.columns((10,1))
 
 with col1_price:
     # Price Chart per Player
     
-    scarcity_player_price = st.selectbox("Pick a scarcity", options=["limited", "rare", "super_rare", "unique"])
+    scarcity_player_price = st.selectbox("Choose a card scarcity level!", options=["limited", "rare", "super_rare", "unique"])
 
    #  player_price_query = f"select t1.transaction_date, t1.price_eur from sorare_price_history as t1 inner join sorare_player as t2 on t1.price_history_player_id = t2.player_id where t2.display_name= '{name_picture}' and t1.price_eur != 0 order by t1.transaction_date ASC;"
     

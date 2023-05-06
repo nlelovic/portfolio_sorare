@@ -133,6 +133,20 @@ if r_o_l == "Ridge":
 
     st.plotly_chart(fig)
 
+    st.markdown(
+    """
+    With the optimal alpha (blue dotted line) the optimal weights for the ridge regression could be used. With does weights a predition from the Linear Regression would be more precise than without the regularization method.
+    Keep in mind, the optimal alpha was computed with Cross Validation. Still, there a lot of improvements possible. Especially the Cross Validation methods and it's parameters could be investigated more intensively.
+
+    For this scope it is enough to get a feeling about the behaviour of the ridge regression with varying regularization parameter alpha.
+
+    By the way, the greater the absoulte weight is, the more important is the feature for the Linear Regression results.
+
+    One could think about to exclude all parameters, where the weights are very close to zero, in order to narrow down the feature selection.
+    Yet, it is sufficient enough for this application here. Check out the Lasso Computation and it's interpretation.
+    """
+    )
+
 if r_o_l == "Lasso":
 
     X = result_corr.drop(columns=["PRICE_EUR_MEAN"])
